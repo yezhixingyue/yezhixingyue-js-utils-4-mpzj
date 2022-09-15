@@ -1,0 +1,23 @@
+{
+  "name": "yezhixingyue-js-utils-4-mpzj",
+  "version": "0.0.10",
+  "description": "",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "typings": "./dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rd /s /q dist & tsc"
+  },
+  "keywords": [
+    "yezhixingyue",
+    "js",
+    "utils",
+    "mpzj"
+  ],
+  "author": "yezhixingyue",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "*"
+  }
+}
