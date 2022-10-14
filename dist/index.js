@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.restoreInitDataByOrigin = exports.getTimeConvertFormat = exports.createAnimation = void 0;
+exports.getFilterParams = exports.restoreInitDataByOrigin = exports.getTimeConvertFormat = exports.createAnimation = void 0;
 /**
  * 创建一个js动画
  *
@@ -80,6 +80,35 @@ exports.restoreInitDataByOrigin = (target, origin) => {
             }
         });
     }
+};
+/**
+* 接口提交时，去除掉没有值的参数
+*
+* @param {IParameterType} obj
+* @param {boolean} [bool=true] 为true时保留值为0的字段 否则将去除掉该字段
+* @returns
+*/
+exports.getFilterParams = (obj, bool = true) => {
+    const _tempObj = {};
+    if (!obj)
+        return {};
+    Object.keys(obj).forEach(key => {
+        if (Object.prototype.toString.call(obj[key]) !== '[object Object]') {
+            if ((obj[key] && key !== 'DateType') || (bool && obj[key] === 0))
+                _tempObj[key] = obj[key];
+        }
+        else {
+            const _t = obj[key];
+            Object.keys(_t).forEach(subKey => {
+                if (_t[subKey]) {
+                    if (!_tempObj[key])
+                        _tempObj[key] = {};
+                    _tempObj[key][subKey] = _t[subKey];
+                }
+            });
+        }
+    });
+    return _tempObj;
 };
 var TokenClass_1 = require("./utils/TokenClass");
 Object.defineProperty(exports, "TokenClass", { enumerable: true, get: function () { return TokenClass_1.TokenClass; } });

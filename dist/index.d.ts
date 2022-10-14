@@ -23,5 +23,13 @@ export interface IParameterType {
 * @param {Object} origin 来源对象
 */
 export declare const restoreInitDataByOrigin: (target: IParameterType, origin: IParameterType) => void;
+/**
+* 接口提交时，去除掉没有值的参数
+*
+* @param {IParameterType} obj
+* @param {boolean} [bool=true] 为true时保留值为0的字段 否则将去除掉该字段
+* @returns
+*/
+export declare const getFilterParams: (obj: IParameterType, bool?: boolean) => IParameterType;
 export { TokenClass } from './utils/TokenClass';
 export { Cookie } from './utils/Cookie';

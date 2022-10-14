@@ -28,13 +28,20 @@ export const createAnimation = (options: ICreateAnimationOptions) => {
 };
 
 /**
- * 转换日期为如下字符串格式：2020-10-20
+ * 
  *
  * @export
  * @param {(Date | string | number)} [date] 可传递Date类型 | 2020-01-10T01:50:50.001 | 时间戳：1663149572998
  * @returns 2020-10-20格式类型
  */
-export const getTimeConvertFormat = (date?: Date | string | number) => {
+/**
+ * 转换日期为如下字符串格式：2020-10-20 / 2022-10-14T10:11:28
+ *
+ * @param {({ date?: Date | string | number, withHMS?: boolean })} [options] withHMS：是否包含时分秒
+ * @returns 2020-10-20 / 2022-10-14T10:11:28
+ */
+export const getTimeConvertFormat = (options?: { date?: Date | string | number, withHMS?: boolean }) => {
+  const { date, withHMS } = options || {};
   let _date = new Date();
   if (date) {
     if (date instanceof Date) {
@@ -51,10 +58,17 @@ export const getTimeConvertFormat = (date?: Date | string | number) => {
   const d = (`0${_d}`).slice(-2);
   const y = _date.getFullYear();
 
-  const str = `${y}-${m}-${d}`;
+  let str = `${y}-${m}-${d}`;
 
   if (/NaN/.test(str)) {
     throw new TypeError('Invalid parameter');
+  }
+
+  if (withHMS === true) {
+    const h = `0${_date.getHours()}`.slice(-2);
+    const minute = `0${_date.getMinutes()}`.slice(-2);
+    const s = `0${_date.getSeconds()}`.slice(-2);
+    str += `T${h}:${minute}:${s}`;
   }
 
   return str;
@@ -85,6 +99,32 @@ export const restoreInitDataByOrigin = (target: IParameterType, origin: IParamet
    });
  }
 };
+
+ /**
+ * 接口提交时，去除掉没有值的参数
+ *
+ * @param {IParameterType} obj
+ * @param {boolean} [bool=true] 为true时保留值为0的字段 否则将去除掉该字段
+ * @returns
+ */
+export const getFilterParams = (obj: IParameterType, bool = true) => {
+  const _tempObj: IParameterType = {};
+  if (!obj) return {};
+  Object.keys(obj).forEach(key => {
+    if (Object.prototype.toString.call(obj[key]) !== '[object Object]') {
+      if ((obj[key] && key !== 'DateType') || (bool && obj[key] === 0)) _tempObj[key] = obj[key];
+    } else {
+      const _t = obj[key];
+      Object.keys(_t).forEach(subKey => {
+        if (_t[subKey]) {
+          if (!_tempObj[key]) _tempObj[key] = {};
+          _tempObj[key][subKey] = _t[subKey];
+        }
+      });
+    }
+  });
+  return _tempObj;
+}
 
 export { TokenClass } from './utils/TokenClass';
 
