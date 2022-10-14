@@ -30,13 +30,20 @@ exports.createAnimation = (options) => {
     }, duration);
 };
 /**
- * 转换日期为如下字符串格式：2020-10-20
+ *
  *
  * @export
  * @param {(Date | string | number)} [date] 可传递Date类型 | 2020-01-10T01:50:50.001 | 时间戳：1663149572998
  * @returns 2020-10-20格式类型
  */
-exports.getTimeConvertFormat = (date) => {
+/**
+ * 转换日期为如下字符串格式：2020-10-20 / 2022-10-14T10:11:28
+ *
+ * @param {({ date?: Date | string | number, withHMS?: boolean })} [options] withHMS：是否包含时分秒
+ * @returns 2020-10-20 / 2022-10-14T10:11:28
+ */
+exports.getTimeConvertFormat = (options) => {
+    const { date, withHMS } = options || {};
     let _date = new Date();
     if (date) {
         if (date instanceof Date) {
@@ -51,9 +58,15 @@ exports.getTimeConvertFormat = (date) => {
     const m = (`0${_m}`).slice(-2);
     const d = (`0${_d}`).slice(-2);
     const y = _date.getFullYear();
-    const str = `${y}-${m}-${d}`;
+    let str = `${y}-${m}-${d}`;
     if (/NaN/.test(str)) {
         throw new TypeError('Invalid parameter');
+    }
+    if (withHMS === true) {
+        const h = `0${_date.getHours()}`.slice(-2);
+        const minute = `0${_date.getMinutes()}`.slice(-2);
+        const s = `0${_date.getSeconds()}`.slice(-2);
+        str += `T${h}:${minute}:${s}`;
     }
     return str;
 };

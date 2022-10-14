@@ -6,13 +6,22 @@ import { ICreateAnimationOptions } from "./types";
  */
 export declare const createAnimation: (options: ICreateAnimationOptions) => void;
 /**
- * 转换日期为如下字符串格式：2020-10-20
+ *
  *
  * @export
  * @param {(Date | string | number)} [date] 可传递Date类型 | 2020-01-10T01:50:50.001 | 时间戳：1663149572998
  * @returns 2020-10-20格式类型
  */
-export declare const getTimeConvertFormat: (date?: string | number | Date | undefined) => string;
+/**
+ * 转换日期为如下字符串格式：2020-10-20 / 2022-10-14T10:11:28
+ *
+ * @param {({ date?: Date | string | number, withHMS?: boolean })} [options] withHMS：是否包含时分秒
+ * @returns 2020-10-20 / 2022-10-14T10:11:28
+ */
+export declare const getTimeConvertFormat: (options?: {
+    date?: string | number | Date | undefined;
+    withHMS?: boolean | undefined;
+} | undefined) => string;
 export interface IParameterType {
     [key: string]: any;
 }
